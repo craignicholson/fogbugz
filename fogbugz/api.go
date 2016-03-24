@@ -16,10 +16,10 @@ import (
 	"time"
 
 	// Am i doing this correctly here?
-	"github.com/craignicholson/gofogbugz/fogbugz/case"
-	"github.com/craignicholson/gofogbugz/fogbugz/interval"
-	"github.com/craignicholson/gofogbugz/fogbugz/milestone"
-	"github.com/craignicholson/gofogbugz/fogbugz/people"
+	"github.com/craignicholson/fogbugz/fogbugz/case"
+	"github.com/craignicholson/fogbugz/fogbugz/interval"
+	"github.com/craignicholson/fogbugz/fogbugz/milestone"
+	"github.com/craignicholson/fogbugz/fogbugz/people"
 )
 
 // API encapsultaes token, site url, and site version returned from FogBugz.
