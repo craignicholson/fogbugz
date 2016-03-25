@@ -54,13 +54,7 @@ type Interval struct {
 func ListIntervals(token string, root *url.URL, dtStartUTC string, dtEndUTC string, timezone string) Intervals {
 	// https://company.fogbugz.com/api.asp?token=[token]&cmd=listIntervals&ixPerson=1&dtStart=2012-03-01&dtEnd=2012-03-28
 	// ixPerson = 1, will collect data for all persons during the timeframe.
-	// as long as the user had admin privilages
-	//TODO: Validate timezone is not nil and it timezone is not nil.
-	// default to UTC when timezone is nil
 
-	// LoadLocation uses http://golang.org/pkg/time/#LoadLocation.
-	// icann names - get alist of these... we can use... for documentation
-	// https://www.iana.org/time-zones
 	location, err4 := time.LoadLocation(timezone)
 	if err4 != nil {
 		fmt.Printf("LoadLocation : %s", err4)
@@ -114,8 +108,8 @@ func ListIntervals(token string, root *url.URL, dtStartUTC string, dtEndUTC stri
 	for key := range bugs {
 		bug.WriteString(strconv.Itoa(key) + ",")
 	}
-
 	//TODO: Remove the last trailing comma, even though the api works with comma.
+
 	r.Intervals.Bugs = bug.String()
 	return r.Intervals
 }
