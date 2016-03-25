@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	// Am i doing this correctly here?
+	// Am I doing this correctly here, with code strucutre and formatting
 	"github.com/craignicholson/fogbugz/fogbugz/case"
 	"github.com/craignicholson/fogbugz/fogbugz/interval"
 	"github.com/craignicholson/fogbugz/fogbugz/milestone"
@@ -97,7 +97,6 @@ func (api *API) GetInterval(startDateLocal time.Time, endDateLocal time.Time, ti
 
 	startDateUTC := startDateLocal.In(location)
 	endDateUTC := endDateLocal.In(location)
-	timezone = "America/Chicago"
 	const longForm = "Jan 2, 2006 at 3:04pm (MST)"
 
 	fmt.Println(startDateUTC.Format(longForm))
