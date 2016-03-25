@@ -56,9 +56,6 @@ func (api *API) Login(email string, password string) error {
 	if err := xml.Unmarshal(body, &r); err != nil {
 		fmt.Printf("Login Unmarshal failed: %s\n", err)
 	}
-	//debug
-	fmt.Printf("Error: %v\n", r.Error)
-	fmt.Printf("Token: %v\n", r.Token)
 
 	api.token = r.Token
 	return nil
@@ -99,32 +96,34 @@ func (api *API) GetInterval(startDateLocal time.Time, endDateLocal time.Time, ti
 	endDateUTC := endDateLocal.In(location)
 	const longForm = "Jan 2, 2006 at 3:04pm (MST)"
 
+	//Print the dates out for debugging
 	fmt.Println(startDateUTC.Format(longForm))
 	fmt.Println(endDateUTC.Format(longForm))
 
 	// Send the Dates in as RFC3339,
-	list := interval.ListIntervals(api.token, api.Root, startDateUTC.Format(time.RFC3339), endDateUTC.Format(time.RFC3339), timezone)
+	list := interval.ListIntervals(api.token,
+		api.Root,
+		startDateUTC.Format(time.RFC3339),
+		endDateUTC.Format(time.RFC3339),
+		timezone)
+
 	return list
 }
 
-// GetMilestone pulls all milestones available
+// GetMilestone pulls all milestones available.
 func (api *API) GetMilestone() map[int]milestone.FixFor {
 	m := milestone.ListMilestone(api.token, api.Root)
 	return m
 }
 
 // GetPeople returns a map of Persons and is to be used
-// to lookup the Fullname and email address of each person
+// to lookup the Fullname and email address of each person.
 func (api *API) GetPeople() map[int]people.Person {
 	list := people.ListPeople(api.token, api.Root)
 	return list
 }
 
-// GetHours in a ClarkKent format
-// to rollup the hours, business logic into a report
-// hours to projects which belong to a customer
-//
-// TODO: and why do i need to reference gofogbugz?
+// GetHours in a accountant like format.
 func (api *API) GetHours(startDateLocal string, endDateLocal string, timezone string) []Hour {
 	// Convert the strings to time.Time
 	loc, _ := time.LoadLocation(timezone)
@@ -162,6 +161,7 @@ func (api *API) GetHours(startDateLocal string, endDateLocal string, timezone st
 		data.CaseNumber = intervals.Interval[i].Bug
 
 		//Set the predefined BillingPeriod
+		//TODO: Specific to my needs - need to rework
 		data.BillingPeriod = "1stCheck"
 		if intervals.Interval[i].EndLocal.Day() > 15 {
 			data.BillingPeriod = "2ndCheck"
