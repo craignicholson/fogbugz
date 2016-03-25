@@ -1,54 +1,58 @@
-# gofogbugz
-Application to collect data from the FogBugz API - ClarkKent expansion
-http://help.fogcreek.com/8202/xml-api
+# FogBugz Package for FogBugz API
 
-## TODOs:
-Sometimes FogBugz fields have empty strings for dates and time.Time throughs
-parse error, it would be good to see which interval, case etc... or maybe
-just ignore these and make sure the data is still being captured.
+Introduction
+------------
+API interface to the FogBugz xml api.  Used to collect data from the
+FogBugz API and produce a similar report as ClarkKent.
+http://help.fogcreek.com/8202/xml-api  
+
+Installation and usage
+----------------------
+
+The import path for the packages are *github.com/craignicholson/fogbugz/fogbugz*.
+
+To install it, run:
+
+    go get github.com/craignicholson/fogbugz/fogbugz
 
 
-## Overview
-We use FogBugz to track projects for statements of work for clients instead
-of the project being a software project.  This is atypical and the main reason
-is for reporting hours used for each project.
+Package Structure
+----------------------
+The fogbugz package contains a folder *fogbugz* which has one .go file in
+sub folder.  The reason for this is case.go, interval.go, milestone.go, and
+people.go each contain a **Response** struct and inside the **Response** struct
+is the the struct for the data (case, interval, milestone, people).  
 
-Goals
+Placing each package in separate folders helps keep the naming schema the same
+for each package for the **Response** struct.
+
+Grouping all the packages into one folder allows the user to import
+all packages with on *go get*.
+
+Learning how to structure go code and packages is part of this applications
+goal as well.  Learning by doing.  
+* https://golang.org/doc/code.html
+* https://peter.bourgon.org/go-in-production/
+
+Using this package
+----------------------
+A simple CLI application was created to show how to use this package.
+
+    github.com/craignicholson/fogbugzexporter
+
+
+Additional Goals
+----------------------
 * Provide web UI for accountant to pull hours for each month by date range.
 * Rollup hours by employee
 * Save the raw data to .csv file which is available by Download
 
-## Using FogBugz to Report Hours
-
-### How to quickly run this script
-Edit the following values and click run, execute etc... in the sql tool (IDE)
-
-@FirstDayofBillingMonth - SET THIS TO THE First Day of the month you are billing
-@FirstDayofNextMonth    - SET THIS TO THE First Day of the next month
-
-## Detail Overview
-
-Users in FogBugz can use the working task to enter hours for each case.  FogBugz additionally has
-a feature one can set for each user's Working Schedule under a user's own profile which allows
-them to allocate their time and completion dates and set working days and a daily schedule which
-can automatically start and stop work.  
-
-Ocassionally people using this automatically start and stop work feature let the tasks run-on
-without review of their hours and can over bill customers.
-
-Also, when working outside of the workday schedule the user is prompted to answer 'yes/no' to
-working outside of the workday, and if they say yes, and never stop the timer the timer
-will run to midnight.  This will cause issues with the actual vs reported total and each user
-will need to correct their own time.
-
-They can sort this out using the Timesheet report under their own profile. (I think, a non admin
-user needs to verify this)
-
-## Troubleshooting Issues
+FogBugz API Documentation
+----------------------
 
 ## Using the FogBugz API
-API Link:                       https://developers.fogbugz.com/default.asp?W194
-Database Schema:                http://fogbugz.stackexchange.com/fogbugz-database-schema
+API Link:         https://developers.fogbugz.com/default.asp?W194
+Database Schema:  http://fogbugz.stackexchange.com/fogbugz-database-schema
 
 ### Get A Token
 
@@ -69,10 +73,8 @@ https://company.fogbugz.com/api.asp?cmd=logon&email=scullyandmulder&password=tru
 
 ```
 
-The falling data pulls are necessary
-
 ### USERS
-Get of LIST OF People in FogBugz so we can walk back to the sFullName
+Get of LIST OF People in FogBugz so we can walk back to the sFullName.
 
 EXAMPLE
 https://company.fogbugz.com/api.asp?token=d39eioefo0nkqf20adkan35qiokdi5&cmd=listPeople
@@ -151,19 +153,22 @@ https://company.fogbugz.com/api.asp?token=d39eioefo0nkqf20adkan35qiokdi5&cmd=lis
 
 ### TIME INTERVALS
 
-GET All the time for a Month and the Case #s
-We will need a way to manually edit or via a form request the dtStart and dtEnd
+GET All the time for a Month and the Case #s.
+We will need a way to manually edit or via a form request the dtStart and dtEnd.
 -----------------------------------------------------------------------------------------
 https://company.fogbugz.com/api.asp?token=m8rr99dopu7hm2pmib5u5p4tpfd3ti&cmd=listIntervals&ixPerson=1&dtStart=2012-03-01&dtEnd=2012-03-28
 https://company.fogbugz.com/api.asp?token=iierr9nrc2vg441t1vcn8ee5ftlrqq&cmd=listTags
 cmd=listTags
 
 ixPerson – optional
-Specifies which user’s intervals should be returned. If omitted, list intervals for the logged on user.
-If set to 1, list intervals for all users. Note that you must be an administrator to see time interval
-information for users other than the logged on user.
+Specifies which user’s intervals should be returned. If omitted, list intervals
+for the logged on user.  If set to 1, list intervals for all users. Note that
+you must be an administrator to see time interval information for users other
+than the logged on user.
 
-All parameters starting with the letters “dt” only accept times expressed in UTC (Coordinated Universal Time). Similarly, all return values starting with those letters will be expressed in UTC.
+All parameters starting with the letters “dt” only accept times expressed in
+UTC (Coordinated Universal Time). Similarly, all return values starting with
+those letters will be expressed in UTC.
 
 
 ```xml
@@ -196,7 +201,7 @@ All parameters starting with the letters “dt” only accept times expressed in
 ```
 
 ### Case INFORMATION
-Fetch the case Information We need for the time sheet for Ann
+Fetch the case Information We need for the time sheet.
 -----------------------------------------------------------------------------------------
 
 https://company.fogbugz.com/api.asp?token=iierr9nrc2vg441t1vcn8ee5ftlrqq&cmd=search&q=17308&cols=sTitle,ixProject,sProject,sArea,sCategory,sFixFor,ixFixFor,tags,plugin_customfields_at_fogcreek_com_customere1c
@@ -226,7 +231,8 @@ https://company.fogbugz.com/api.asp?token=iierr9nrc2vg441t1vcn8ee5ftlrqq&cmd=sea
 ```
 
 ### MILESTONES
-------FixFor - sStartNote is not showing up yet.... sFixFor is the milestone.. to go fetch the sStartNote
+------FixFor - sStartNote is not showing up yet.... sFixFor is the milestone..
+to go fetch the sStartNote.
 We will need to pull a list fo the ixForFor Ids and request them all out.
 
 cmd=viewFixFor&ixFixFor=224
