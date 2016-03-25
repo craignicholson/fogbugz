@@ -107,11 +107,7 @@ func (api *API) GetInterval(startDateLocal time.Time, endDateLocal time.Time, ti
 	return list
 }
 
-// GetMilestone pulls one milestone at a time... yawn
-// what am I going to do about these dang startnotes
-// pull them all and then write them all at once,
-// and then just update every so often or maybe ... just check for the latest?
-// takes the ixFixFor for the key
+// GetMilestone pulls all milestones available
 func (api *API) GetMilestone() map[int]milestone.FixFor {
 	m := milestone.ListMilestone(api.token, api.Root)
 	return m
