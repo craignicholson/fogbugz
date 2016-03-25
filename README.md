@@ -51,12 +51,11 @@ FogBugz API Documentation
 ----------------------
 
 ## Using the FogBugz API
-API Link:         https://developers.fogbugz.com/default.asp?W194
-Database Schema:  http://fogbugz.stackexchange.com/fogbugz-database-schema
+API Link:         https://developers.fogbugz.com/default.asp?W194  Database Schema:  http://fogbugz.stackexchange.com/fogbugz-database-schema
 
 ### Get A Token
 
-https://company.fogbugz.com/api.asp?cmd=logon&email=scullyandmulder&password=trustnoone
+    https://company.fogbugz.com/api.asp?cmd=logon&email=scullyandmulder&password=trustnoone
 
 ```xml
 <response>
@@ -73,11 +72,10 @@ https://company.fogbugz.com/api.asp?cmd=logon&email=scullyandmulder&password=tru
 
 ```
 
-### USERS
-Get of LIST OF People in FogBugz so we can walk back to the sFullName.
+### Get Users
+Gets list of People in FogBugz so we can walk back to the sFullName since the other API's return only the ixPerson.
 
-EXAMPLE
-https://company.fogbugz.com/api.asp?token=d39eioefo0nkqf20adkan35qiokdi5&cmd=listPeople
+    https://company.fogbugz.com/api.asp?token=d39eioefo0nkqf20adkan35qiokdi5&cmd=listPeople
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -151,25 +149,20 @@ https://company.fogbugz.com/api.asp?token=d39eioefo0nkqf20adkan35qiokdi5&cmd=lis
 </response>
 ```
 
-### TIME INTERVALS
+### Get Time Intervals
+Get the time for a date range or the Case #s.
 
-GET All the time for a Month and the Case #s.
-We will need a way to manually edit or via a form request the dtStart and dtEnd.
------------------------------------------------------------------------------------------
-https://company.fogbugz.com/api.asp?token=m8rr99dopu7hm2pmib5u5p4tpfd3ti&cmd=listIntervals&ixPerson=1&dtStart=2012-03-01&dtEnd=2012-03-28
-https://company.fogbugz.com/api.asp?token=iierr9nrc2vg441t1vcn8ee5ftlrqq&cmd=listTags
-cmd=listTags
+    https://company.fogbugz.com/api.asp?token=m8rr99dopu7hm2pmib5u5p4tpfd3ti&cmd=listIntervals&ixPerson=1&dtStart=2012-03-01&dtEnd=2012-03-28
 
 ixPerson – optional
-Specifies which user’s intervals should be returned. If omitted, list intervals
-for the logged on user.  If set to 1, list intervals for all users. Note that
-you must be an administrator to see time interval information for users other
-than the logged on user.
+> Specifies which user’s intervals should be returned. If omitted, list intervals
+  for the logged on user.  If set to 1, list intervals for all users. Note that
+  you must be an administrator to see time interval information for users other
+  than the logged on user.
 
-All parameters starting with the letters “dt” only accept times expressed in
-UTC (Coordinated Universal Time). Similarly, all return values starting with
-those letters will be expressed in UTC.
-
+> All parameters starting with the letters “dt” only accept times expressed in
+  UTC (Coordinated Universal Time). Similarly, all return values starting with
+  those letters will be expressed in UTC.
 
 ```xml
 <response>
@@ -200,11 +193,13 @@ those letters will be expressed in UTC.
 </response>
 ```
 
-### Case INFORMATION
-Fetch the case Information We need for the time sheet.
------------------------------------------------------------------------------------------
+### Get Case
+Get the case Information We need for the time sheet.
 
-https://company.fogbugz.com/api.asp?token=iierr9nrc2vg441t1vcn8ee5ftlrqq&cmd=search&q=17308&cols=sTitle,ixProject,sProject,sArea,sCategory,sFixFor,ixFixFor,tags,plugin_customfields_at_fogcreek_com_customere1c
+> Additional data can be pulled by adding the element name to
+the query string in case.go
+
+    https://company.fogbugz.com/api.asp?token=iierr9nrc2vg441t1vcn8ee5ftlrqq&cmd=search&q=17308&cols=sTitle,ixProject,sProject,sArea,sCategory,sFixFor,ixFixFor,tags,plugin_customfields_at_fogcreek_com_customere1c
 
 ```xml
 <response>
@@ -230,14 +225,14 @@ https://company.fogbugz.com/api.asp?token=iierr9nrc2vg441t1vcn8ee5ftlrqq&cmd=sea
 </response>
 ```
 
-### MILESTONES
-------FixFor - sStartNote is not showing up yet.... sFixFor is the milestone..
-to go fetch the sStartNote.
-We will need to pull a list fo the ixForFor Ids and request them all out.
+### Get Milestones
+sFixFor is the milestone.
+sStartNote is used by use internally so we need to pull these values.
 
-cmd=viewFixFor&ixFixFor=224
-https://company.fogbugz.com/api.asp?token=[]&cmd=viewFixFor&ixFixFor=224
-https://compnay.fogbugz.com/api.asp?token=[]&cmd=listFixFors
+
+    https://company.fogbugz.com/api.asp?token=[]&cmd=viewFixFor&ixFixFor=224
+
+    https://compnay.fogbugz.com/api.asp?token=[]&cmd=listFixFors
 
 ```xml
 <response>
