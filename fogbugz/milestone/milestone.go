@@ -45,6 +45,7 @@ type FixFor struct {
 }
 
 // ListMilestone collects the milestones (FixFors)
+// which contain all the sStartNotes, in one request & response
 func ListMilestone(token string, root *url.URL) map[int]FixFor {
 	// https://company.fogbugz.com/api.asp?token=h5ed5c72inoa46cpa5jj503ccu676j&cmd=listFixFors
 	v := url.Values{"token": {token}, "cmd": {"listFixFors"}}
