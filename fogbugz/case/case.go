@@ -2,9 +2,9 @@
 // Use of this source code is governed by the Apache 2.0
 // license that can be found in the LICENSE file.
 
-// Package cases implements the interface(?) to the fogbugz api
-// to pull cases using the search command.  To extend the data
-// pulled add additional columns and remove the customer fields.
+// Package cases implements the interface to the fogbugz api
+// to pull cases using the search command.  TODO:To extend the data
+// pulled add additional columns and remove the custom fields.
 // cols:{"sTitle,ixProject,sProject,sArea,sCategory,sFixFor,ixFixFor,
 // cols: sStartNote,tags,plugin_customfields_at_fogcreek_com_customere1c"}}
 package cases
@@ -55,13 +55,14 @@ type Tags struct {
 
 // ListCases takes in a comma seperated list of strings and returns a list
 // of cases, cases can be comma separated list of case numbers without spaces.
-// Using a map allows us to searches to find the Bug/Case by the ixBug
+// Using a map allows us to search to find the Bug/Case by the ixBug
 // For example, interval.go has a reference only to ixBug.
 // https://company.fogbugz.com/api.asp?token=csjm9ljou4q4fkc3tgepgm2nm0vmfk&cmd=search&q=7880&cols=tags,sTitle,ixProject,sProject,sArea,sCategory,sFixFor,ixFixFor,sStartNote,plugin_customfields_at_fogcreek_com_customere1c,plugin_customfields_at_fogcreek_com_taskxordert0e
-// The query term you are searching for.  Can be a string, a case number, a
+// Notes: The query term you are searching for can be a string, a case number, a
 // comma separated list of case numbers without spaces, e.g. 12,25,556.
-// The last cols in the list of values is a custom field, this will need
-// to be removed or maybe it will run if you chose not to edit...
+
+// The last cols in the list of values are a custom fields, these might need
+// to be removed for other users.
 func ListCases(token string, root *url.URL, casescsv string) map[int]Case {
 
 	v := url.Values{"token": {token}, "cmd": {"search"}, "q": {casescsv}, "cols": {"sTitle,ixProject,sProject,sArea,sCategory,sFixFor,ixFixFor,sStartNote,tags,plugin_customfields_at_fogcreek_com_customere1c"}}
