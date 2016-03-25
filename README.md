@@ -232,7 +232,7 @@ sStartNote is used by use internally so we need to pull these values.
 
     https://company.fogbugz.com/api.asp?token=[]&cmd=viewFixFor&ixFixFor=224
 
-    https://compnay.fogbugz.com/api.asp?token=[]&cmd=listFixFors
+    https://company.fogbugz.com/api.asp?token=[]&cmd=listFixFors
 
 ```xml
 <response>
